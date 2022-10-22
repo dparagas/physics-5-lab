@@ -383,6 +383,32 @@ def deg_of_freedom(x_iterable, y_iterable, reg_model: type) -> float:
     nu = n - params
     return float(nu)
 
+# Conversion functions
+
+nm_to_m = lambda nm: nm * 1e-9
+nm_to_cm = lambda nm: nm * 1e-7
+m_to_cm = lambda m: m*100
+cm_to_mm = lambda cm: cm*10
+px_to_micro_m = lambda px: np.array((px*2.54, px*0.03))
+micro_m_to_cm = lambda micro_m: micro_m*1e-4
+micro_m_to_mm = lambda micro_m: micro_m*0.001
+px_to_cm = lambda px: micro_m_to_cm(px_to_micro_m(px))
+px_to_mm = lambda px: micro_m_to_mm(px_to_micro_m(px))
+
+class error_analysis:
+
+    def add(*terms):
+        return np.sum(terms)
+
+    def multiply(computed_val_s__without_uncty, terms, uncties):
+        if terms != np.ndarray:
+            terms = np.array([terms])
+        if uncties != np.ndarray:
+            uncties = np.array([uncties])
+        assert len(uncties) == len(terms), "there is an unequal number of terms and uncertainties"
+        frac_add = np.sum([uncties[i]/np.abs(terms[i]) for i in range(len(terms))])
+        return frac_add*np.abs(computed_val_s__without_uncty)
+
 
 def scatter_plt_arr(x_arr: ndarray, y_arr: ndarray, uncty_arr=None, ind_uncty_arr=None,
                     x_title="", y_title="", x_units="", y_units="", title="",
@@ -693,3 +719,4 @@ def find_plot_range_extrema(arr, uncty_arr, min_or_max: str):
     [0]
     )
     return result
+#%%
