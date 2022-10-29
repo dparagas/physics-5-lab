@@ -86,7 +86,7 @@ def std(iterable, type="parent") -> float:
     than five elements, the sample standard deviation is taken. """
     assert type == 'parent' or type == 'sample'
     arr = to_array(iterable).flatten()
-    if (type == "parent") or (len(arr) >= 5):
+    if (len(arr) >= 5) and (type == "parent"):
         return std_parent(arr)
     else:
         return std_sample(arr)
