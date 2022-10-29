@@ -16,10 +16,21 @@ import matplotlib.pyplot as plt
 from numpy import ndarray
 from pandas.core.frame import DataFrame
 
+# make arrays fast
+
+def make_array(*args):
+    return np.array(args)
+
+def ma(*args):
+    return np.array(args)
+
+def qarr(*args):
+    return np.array(args)
 
 def to_array(iterable) -> ndarray:
     return np.array(list(iterable))
 
+# statistics
 
 def mean(iterable) -> float:
     """Returns the mean of an iterable's elements"""
