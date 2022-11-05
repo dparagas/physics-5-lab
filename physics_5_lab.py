@@ -568,7 +568,7 @@ def has_units(title: str):
 def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
                      x_title="", y_title="", x_units="", y_units="", title="",
                      figsize=(6, 6), x_font_size=12, y_font_size=12,
-                     title_font_size=14, x_tick_size=10, y_tick_size=10, grid=False, show_ref=False):
+                     title_font_size=14, x_tick_size=10, y_tick_size=10, grid=False, show_ref=False, raw_data=False):
 
     # Set figure size and axes
     fig, ax = plt.subplots(figsize=figsize)
@@ -635,7 +635,10 @@ def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
         ref_m_height = refactored_height(np.array([range_min, range_max]), m_index)
         m = reg_model.slope(x_arr, y_arr, uncty_arr)
         m_uncty = reg_model.slope_uncty(x_arr, y_arr, uncty_arr)
-        m_equation = "m = %1.1f \u00b1 %1.1f" % (m, m_uncty)
+        if raw_data:
+            m_equation = f"m = {m} \u00b1 {m_uncty}"
+        else:
+            m_equation = "m = %1.1f \u00b1 %1.1f" % (m, m_uncty)
         m_units = ""
         if y_units != "" and x_units != "":
             m_units = f"{y_units}/{x_units}"
@@ -649,7 +652,10 @@ def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
         ref_c_height = refactored_height(np.array([range_min, range_max]), c_index)
         c = reg_model.intercept(x_arr, y_arr, uncty_arr)
         c_uncty = reg_model.intercept_uncty(x_arr, y_arr, uncty_arr)
-        c_equation = "c = %1.1f \u00b1 %1.1f" % (c, c_uncty)
+        if raw_data:
+            c_equation = f"c = {c} \u00b1 {c_uncty}"
+        else:
+            c_equation = "c = %1.1f \u00b1 %1.1f" % (c, c_uncty)
         c_units = ""
         if y_units != "" and x_units != "":
             c_units = f"{y_units}/{x_units}"
@@ -662,7 +668,10 @@ def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
     if red_chi_sq_index != nonexistent_index:
         ref_red_chi_sq_height = refactored_height(np.array([range_min, range_max]), red_chi_sq_index)
         redchisq = red_chi_sq(x_arr, y_arr, uncty_arr, reg_model)
-        print("Reduced Chi-Squared = %1.1f" % redchisq)
+        if raw_data:
+            print(f"Reduced Chi-Squared = {redchisq}")
+        else:
+            print("Reduced Chi-Squared = %1.1f" % redchisq)
         if show_ref:
             plt.text(min(x_arr), ref_red_chi_sq_height, "$\\tilde{\\chi}^2$ = %1.1f" % redchisq)
     plt.legend(frameon=True)
