@@ -664,7 +664,7 @@ def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
         redchisq = np.round(red_chi_sq(x_arr, y_arr, uncty_arr, reg_model), round_to)
         print(f"Reduced Chi-Squared = {redchisq}")
         if show_ref:
-            plt.text(min(x_arr), ref_red_chi_sq_height, r"$\\tilde{\\chi}^2$ = " + f"{redchisq}")
+            plt.text(min(x_arr), ref_red_chi_sq_height, r"$\tilde{\chi}^2$ = " + f"{redchisq}")
     plt.legend(frameon=True)
     plt.show()
 
