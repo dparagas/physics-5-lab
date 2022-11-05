@@ -568,7 +568,7 @@ def has_units(title: str):
 def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
                      x_title="", y_title="", x_units="", y_units="", title="",
                      figsize=(6, 6), x_font_size=12, y_font_size=12,
-                     title_font_size=14, x_tick_size=10, y_tick_size=10, grid=False, show_ref=False, raw_data=False):
+                     title_font_size=14, x_tick_size=10, y_tick_size=10, grid=False, show_ref=False, round_to=1):
 
     # Set figure size and axes
     fig, ax = plt.subplots(figsize=figsize)
@@ -635,10 +635,7 @@ def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
         ref_m_height = refactored_height(np.array([range_min, range_max]), m_index)
         m = reg_model.slope(x_arr, y_arr, uncty_arr)
         m_uncty = reg_model.slope_uncty(x_arr, y_arr, uncty_arr)
-        if raw_data:
-            m_equation = f"m = {m} \u00b1 {m_uncty}"
-        else:
-            m_equation = "m = %1.1f \u00b1 %1.1f" % (m, m_uncty)
+        m_equation = f"m = {np.round(m, round_to)} \u00b1 {np.round(m_uncty, round_to)}"
         m_units = ""
         if y_units != "" and x_units != "":
             m_units = f"{y_units}/{x_units}"
@@ -652,10 +649,7 @@ def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
         ref_c_height = refactored_height(np.array([range_min, range_max]), c_index)
         c = reg_model.intercept(x_arr, y_arr, uncty_arr)
         c_uncty = reg_model.intercept_uncty(x_arr, y_arr, uncty_arr)
-        if raw_data:
-            c_equation = f"c = {c} \u00b1 {c_uncty}"
-        else:
-            c_equation = "c = %1.1f \u00b1 %1.1f" % (c, c_uncty)
+        c_equation = f"c = {np.round(c, round_to)} \u00b1 {np.round(c_uncty, round_to)}"
         c_units = ""
         if y_units != "" and x_units != "":
             c_units = f"{y_units}/{x_units}"
@@ -667,20 +661,17 @@ def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
     red_chi_sq_index = pos_indices['red_chi_sq']
     if red_chi_sq_index != nonexistent_index:
         ref_red_chi_sq_height = refactored_height(np.array([range_min, range_max]), red_chi_sq_index)
-        redchisq = red_chi_sq(x_arr, y_arr, uncty_arr, reg_model)
-        if raw_data:
-            print(f"Reduced Chi-Squared = {redchisq}")
-        else:
-            print("Reduced Chi-Squared = %1.1f" % redchisq)
+        redchisq = np.round(red_chi_sq(x_arr, y_arr, uncty_arr, reg_model), round_to)
+        print(f"Reduced Chi-Squared = {redchisq}")
         if show_ref:
-            plt.text(min(x_arr), ref_red_chi_sq_height, "$\\tilde{\\chi}^2$ = %1.1f" % redchisq)
+            plt.text(min(x_arr), ref_red_chi_sq_height, r"$\\tilde{\\chi}^2$ = " + f"{redchisq}")
     plt.legend(frameon=True)
     plt.show()
 
 def best_fit_plt_df(df: DataFrame, x_title: str, y_title: str, uncty_title: str, reg_model: type,
                     x_units="", y_units="", title="",
                     figsize=(6, 6), x_font_size=12, y_font_size=12,
-                    title_font_size=14, x_tick_size=10, y_tick_size=10, grid=False, show_ref=False, raw_data=False):
+                    title_font_size=14, x_tick_size=10, y_tick_size=10, grid=False, show_ref=False, round_to=1):
     x_vals = df[x_title].values
     y_vals = df[y_title].values
     uncty_vals = df[uncty_title].values
@@ -689,7 +680,7 @@ def best_fit_plt_df(df: DataFrame, x_title: str, y_title: str, uncty_title: str,
                             title=title, figsize=figsize,
                             x_font_size=x_font_size, y_font_size=y_font_size,
                             title_font_size=title_font_size, x_tick_size=x_tick_size,
-                            y_tick_size=y_tick_size, grid=grid, show_ref=show_ref, raw_data=raw_data)
+                            y_tick_size=y_tick_size, grid=grid, show_ref=show_ref, round_to=round_to)
 
 def refactored_height(arr_data, pos_index, start_height=390, sep_dist=30):
     assert 0 < start_height < 490, "0 < start_height < 490"
