@@ -680,7 +680,7 @@ def best_fit_plt_arr(x_arr, y_arr, uncty_arr, reg_model: type,
 def best_fit_plt_df(df: DataFrame, x_title: str, y_title: str, uncty_title: str, reg_model: type,
                     x_units="", y_units="", title="",
                     figsize=(6, 6), x_font_size=12, y_font_size=12,
-                    title_font_size=14, x_tick_size=10, y_tick_size=10, grid=False, show_ref=False):
+                    title_font_size=14, x_tick_size=10, y_tick_size=10, grid=False, show_ref=False, raw_data=False):
     x_vals = df[x_title].values
     y_vals = df[y_title].values
     uncty_vals = df[uncty_title].values
@@ -689,7 +689,7 @@ def best_fit_plt_df(df: DataFrame, x_title: str, y_title: str, uncty_title: str,
                             title=title, figsize=figsize,
                             x_font_size=x_font_size, y_font_size=y_font_size,
                             title_font_size=title_font_size, x_tick_size=x_tick_size,
-                            y_tick_size=y_tick_size, grid=grid, show_ref=show_ref)
+                            y_tick_size=y_tick_size, grid=grid, show_ref=show_ref, raw_data=raw_data)
 
 def refactored_height(arr_data, pos_index, start_height=390, sep_dist=30):
     assert 0 < start_height < 490, "0 < start_height < 490"
